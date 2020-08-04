@@ -1,15 +1,13 @@
 import React from 'react';
 
-import Post from '../../components/Post';
-
 import { Container } from './styles';
 
-const Home: React.FC = () => {
+const Post: React.FC = () => {
   return (
     <Container>
-      <Post />
+      <h1>Post</h1>
     </Container>
   );
 };
 
-export default Home;
+export default Post;
