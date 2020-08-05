@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Post from '../../components/Post';
+import Posts from '../../components/Posts';
 
 import { Container } from './styles';
 
 const Home: React.FC = () => {
   return (
     <Container>
-      <Post />
+      <Posts />
     </Container>
   );
 };

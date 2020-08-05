@@ -1,11 +1,19 @@
 import React from 'react';
 
-import { Container } from './styles';
+import { Container, Title, Description } from './styles';
 
-const Post: React.FC = () => {
+interface PostProps {
+  id: number;
+  title: string;
+  body: string;
+  userId: number;
+}
+
+const Post: React.FC<PostProps> = ({ id, title, body, userId }) => {
   return (
     <Container>
-      <h1>Post</h1>
+      <Title>{title}</Title>
+      <Description>{body}</Description>
     </Container>
   );
 };
