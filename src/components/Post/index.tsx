@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Container, Title, Description } from './styles';
 
-interface PostProps {
+export interface PostProps {
   id: number;
   title: string;
   body: string;
