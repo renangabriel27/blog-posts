@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Post, { PostProps } from '../Post';
 import Button from '../Button';
 
+import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
 import { Container } from './styles';
@@ -19,6 +20,7 @@ const Posts: React.FC = () => {
   const [selectedPosts, setSelectedPosts] = useState<SelectedPostsProps>(
     {} as SelectedPostsProps,
   );
+  const { user } = useAuth();
 
   function showAllPosts(): void {
     setPosts(allPosts.slice(0, 3));
@@ -31,7 +33,6 @@ const Posts: React.FC = () => {
   }
 
   useEffect(() => {
-    console.log('entrou');
     const loadAllPosts = async (): Promise<void> => {
       const response = await api.get('/posts');
       const { data } = response;
@@ -42,14 +43,14 @@ const Posts: React.FC = () => {
     };
 
     const loadMyPosts = async (): Promise<void> => {
-      const response = await api.get('/posts?userId=1');
+      const response = await api.get(`/posts?userId=${user.id}`);
       setMyPosts(response.data);
     };
 
     loadAllPosts();
     loadMyPosts();
     setSelectedPosts({ allPosts: true, myPosts: false });
-  }, []);
+  }, [user.id]);
 
   return (
     <Container>

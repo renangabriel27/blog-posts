@@ -2,12 +2,17 @@ import React, { createContext, useCallback, useState, useContext } from 'react';
 
 import api from '../services/api';
 
+interface UserProps {
+  id: number;
+  name: string;
+}
+
 interface AuthState {
-  user: object;
+  user: UserProps;
 }
 
 interface AuthContextData {
-  user: object;
+  user: UserProps;
   signIn(id: string): Promise<void>;
   signOut(): void;
 }
@@ -25,10 +30,11 @@ const AuthProvider: React.FC = ({ children }) => {
     return {} as AuthState;
   });
 
-  const signIn = useCallback(async ({ identification }) => {
+  const signIn = useCallback(async (identification) => {
     const response = await api.get(`/users/${identification}`);
 
     const { id, name } = response.data;
+
     const user = { id, name };
 
     localStorage.setItem('@Blog::user', JSON.stringify(user));
