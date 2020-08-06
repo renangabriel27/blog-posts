@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useHistory } from 'react-router-dom';
 import { Container, Title, Description } from './styles';
 
 export interface PostProps {
@@ -10,8 +11,10 @@ export interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({ id, title, body, userId }) => {
+  const history = useHistory();
+
   return (
-    <Container>
+    <Container onClick={() => history.push(`posts/${id}`)}>
       <Title>{title}</Title>
       <Description>{body}</Description>
     </Container>
