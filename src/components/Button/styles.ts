@@ -4,12 +4,11 @@ import { ButtonProps } from './index';
 
 export const Container = styled.button<ButtonProps>`
   background: ${(props) => (props.selected ? '#ff9000' : '#000')};
-  height: 30px;
-  border-radius: 10px;
+  width: 100%;
+  height: 50px;
   border: 0;
   padding: 0 16px;
   color: #312e38;
-  width: 200px;
   font-weight: 500;
   margin-top: 16px;
   margin-right: 5px;

@@ -8,7 +8,7 @@ import Button from '../Button';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
-import { Container } from './styles';
+import { Container, Menu } from './styles';
 
 interface SelectedPostsProps {
   allPosts: boolean;
@@ -23,7 +23,7 @@ const Posts: React.FC = () => {
   const [selectedPosts, setSelectedPosts] = useState<SelectedPostsProps>(
     {} as SelectedPostsProps,
   );
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const history = useHistory();
 
   function showAllPosts(): void {
@@ -43,47 +43,53 @@ const Posts: React.FC = () => {
       const recentPosts = data.slice(0, 3);
 
       setAllPosts(recentPosts);
+      setPosts(recentPosts);
     };
 
     const loadMyPosts = async (): Promise<void> => {
       const response = await api.get(`/posts?userId=${user.id}`);
       const { data } = response;
       setMyPosts(data);
-      setPosts(data);
     };
 
     loadAllPosts();
     loadMyPosts();
-    setSelectedPosts({ allPosts: false, myPosts: true, createPost: false });
+    setSelectedPosts({ allPosts: true, myPosts: false, createPost: false });
   }, [user.id]);
 
   return (
     <Container>
       <h1>Posts</h1>
 
-      <Button
-        type="button"
-        onClick={showMyPosts}
-        selected={selectedPosts.myPosts}
-      >
-        My posts
-      </Button>
+      <Menu>
+        <Button
+          type="button"
+          onClick={showAllPosts}
+          selected={selectedPosts.allPosts}
+        >
+          Recent posts
+        </Button>
 
-      <Button
-        type="button"
-        selected={selectedPosts.createPost}
-        onClick={() => history.push('/posts/new')}
-      >
-        Create a post
-      </Button>
+        <Button
+          type="button"
+          onClick={showMyPosts}
+          selected={selectedPosts.myPosts}
+        >
+          My posts
+        </Button>
 
-      <Button
-        type="button"
-        onClick={showAllPosts}
-        selected={selectedPosts.allPosts}
-      >
-        All posts
-      </Button>
+        <Button
+          type="button"
+          selected={selectedPosts.createPost}
+          onClick={() => history.push('/posts/new')}
+        >
+          Create a post
+        </Button>
+
+        <Button type="button" onClick={signOut}>
+          Logout
+        </Button>
+      </Menu>
 
       {posts.map((post) => {
         return (

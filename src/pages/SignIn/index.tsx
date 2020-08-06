@@ -69,7 +69,7 @@ const SignIn: React.FC = () => {
             <Input
               name="id"
               icon={FiUser}
-              placeholder="Please, insert your id"
+              placeholder="please insert your id"
             />
 
             <Button type="submit">Enter</Button>
