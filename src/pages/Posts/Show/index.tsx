@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
-import { PostProps } from '../../../components/Post';
+import Button from '../../../components/Button';
+import Comment, { CommentProps } from '../../../components/Comment';
+import Post, { PostProps } from '../../../components/Post';
 import api from '../../../services/api';
 
 import { Container } from './styles';
 
-interface CommentsProps {
-  id: number;
-  name: string;
-  email: string;
-  body: string;
-}
-
 const ShowPost: React.FC = () => {
   const { id } = useParams();
+  const history = useHistory();
 
   const [post, setPost] = useState<PostProps>({} as PostProps);
-  const [comments, setComments] = useState<CommentsProps[]>([]);
+  const [comments, setComments] = useState<CommentProps[]>([]);
 
   useEffect(() => {
     const loadPost = async (): Promise<void> => {
@@ -37,13 +33,28 @@ const ShowPost: React.FC = () => {
 
   return (
     <Container>
-      <h1>Id {id}</h1>
-      <p>Title {post.title}</p>
-      <p>Body {post.body}</p>
-      <p>UserId {post.userId}</p>
+      <h1>Post</h1>
 
-      {comments.map((comment: CommentsProps, index) => {
-        return <p key={comment.id}>{comment.email}</p>;
+      <Post
+        key={post.id}
+        id={post.id}
+        title={post.title}
+        body={post.body}
+        userId={post.userId}
+      />
+
+      <h2>Comments</h2>
+
+      {comments.map((comment: CommentProps) => {
+        return (
+          <Comment
+            body={comment.body}
+            email={comment.email}
+            id={comment.id}
+            name={comment.name}
+            postId={comment.postId}
+          />
+        );
       })}
     </Container>
   );

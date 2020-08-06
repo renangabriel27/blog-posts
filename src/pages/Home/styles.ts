@@ -6,7 +6,4 @@ export const Container = styled.div`
   padding-top: 50px;
 `;
 
-export const Header = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+export const Header = styled.div``;

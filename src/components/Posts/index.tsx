@@ -59,8 +59,6 @@ const Posts: React.FC = () => {
 
   return (
     <Container>
-      <h1>Posts</h1>
-
       <Menu>
         <Button
           type="button"
@@ -83,7 +81,7 @@ const Posts: React.FC = () => {
           selected={selectedPosts.createPost}
           onClick={() => history.push('/posts/new')}
         >
-          Create a post
+          Write a post
         </Button>
 
         <Button type="button" onClick={signOut}>

@@ -12,7 +12,7 @@ const Home: React.FC = () => {
   return (
     <Container>
       <Header>
-        <p>Welcome {user.name}!</p>
+        <h1>Welcome {user.name}!</h1>
       </Header>
 
       <Posts />
