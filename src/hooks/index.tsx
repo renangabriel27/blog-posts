@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { ToastProvider } from 'react-toast-notifications';
 import { AuthProvider } from './auth';
-import { ToastProvider } from './toast';
 
 const AppProvider: React.FC = ({ children }) => (
   <AuthProvider>

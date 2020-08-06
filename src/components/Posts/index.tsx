@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { useHistory } from 'react-router-dom';
+
 import Post, { PostProps } from '../Post';
 import Button from '../Button';
 
@@ -11,6 +13,7 @@ import { Container } from './styles';
 interface SelectedPostsProps {
   allPosts: boolean;
   myPosts: boolean;
+  createPost: boolean;
 }
 
 const Posts: React.FC = () => {
@@ -21,15 +24,16 @@ const Posts: React.FC = () => {
     {} as SelectedPostsProps,
   );
   const { user } = useAuth();
+  const history = useHistory();
 
   function showAllPosts(): void {
     setPosts(allPosts.slice(0, 3));
-    setSelectedPosts({ allPosts: true, myPosts: false });
+    setSelectedPosts({ allPosts: true, myPosts: false, createPost: false });
   }
 
   function showMyPosts(): void {
     setPosts(myPosts);
-    setSelectedPosts({ allPosts: false, myPosts: true });
+    setSelectedPosts({ allPosts: false, myPosts: true, createPost: false });
   }
 
   useEffect(() => {
@@ -38,18 +42,19 @@ const Posts: React.FC = () => {
       const { data } = response;
       const recentPosts = data.slice(0, 3);
 
-      setAllPosts(data);
-      setPosts(recentPosts);
+      setAllPosts(recentPosts);
     };
 
     const loadMyPosts = async (): Promise<void> => {
       const response = await api.get(`/posts?userId=${user.id}`);
-      setMyPosts(response.data);
+      const { data } = response;
+      setMyPosts(data);
+      setPosts(data);
     };
 
     loadAllPosts();
     loadMyPosts();
-    setSelectedPosts({ allPosts: true, myPosts: false });
+    setSelectedPosts({ allPosts: false, myPosts: true, createPost: false });
   }, [user.id]);
 
   return (
@@ -58,18 +63,26 @@ const Posts: React.FC = () => {
 
       <Button
         type="button"
-        onClick={showAllPosts}
-        selected={selectedPosts.allPosts}
-      >
-        All posts
-      </Button>
-
-      <Button
-        type="button"
         onClick={showMyPosts}
         selected={selectedPosts.myPosts}
       >
         My posts
+      </Button>
+
+      <Button
+        type="button"
+        selected={selectedPosts.createPost}
+        onClick={() => history.push('/posts/new')}
+      >
+        Create a post
+      </Button>
+
+      <Button
+        type="button"
+        onClick={showAllPosts}
+        selected={selectedPosts.allPosts}
+      >
+        All posts
       </Button>
 
       {posts.map((post) => {

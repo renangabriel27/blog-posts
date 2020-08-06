@@ -14,15 +14,15 @@
     "@unform/web": "^2.1.0",
     "axios": "^0.19.2",
     "polished": "^3.6.5",
-    "react-icons": "^3.10.0",
-    "react-router-dom": "^5.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-icons": "^3.10.0",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "react-spring": "^8.0.27",
+    "react-toast-notifications": "^2.4.0",
     "styled-components": "^5.1.1",
     "typescript": "~3.7.2",
-    "react-spring": "^8.0.27",
-    "uuidv4": "^6.0.7",
     "yup": "^0.29.1"
   },
   "scripts": {
@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.5",
+    "@types/react-toast-notifications": "^2.4.0",
     "@types/styled-components": "^5.1.2",
     "@types/yup": "^0.29.3",
     "@typescript-eslint/eslint-plugin": "^2.29.0",

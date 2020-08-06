@@ -10,8 +10,11 @@ export const Container = styled.div`
   cursor: pointer;
 `;
 
-export const Title = styled.h1``;
+export const Title = styled.h1`
+  font-weight: 600;
+`;
 
 export const Description = styled.p`
   font-size: 14px;
+  font-weight: 400;
 `;

@@ -15,7 +15,7 @@ export default createGlobalStyle`
   }
 
   body, input, button {
-    font-family: 'Lato', sans-serif;
+    font-family: IBM Plex Mono, serif;
     font-size: 16px;
   }
 

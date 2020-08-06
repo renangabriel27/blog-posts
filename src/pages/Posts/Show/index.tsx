@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { PostProps } from '../../components/Post';
-import api from '../../services/api';
+import { PostProps } from '../../../components/Post';
+import api from '../../../services/api';
 
 import { Container } from './styles';
 
@@ -14,7 +14,7 @@ interface CommentsProps {
   body: string;
 }
 
-const Post: React.FC = () => {
+const ShowPost: React.FC = () => {
   const { id } = useParams();
 
   const [post, setPost] = useState<PostProps>({} as PostProps);
@@ -49,4 +49,4 @@ const Post: React.FC = () => {
   );
 };
 
-export default Post;
+export default ShowPost;
