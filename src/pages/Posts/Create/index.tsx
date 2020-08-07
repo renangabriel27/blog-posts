@@ -5,6 +5,7 @@ import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 
+import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../../../hooks/auth';
 import getValidationErrors from '../../../utils/getValidationErrors';
@@ -30,6 +31,19 @@ const CreatePost: React.FC = () => {
   const { addToast } = useToasts();
   const { user } = useAuth();
 
+  const addNewPost = useCallback((newPost) => {
+    const personalPosts = localStorage.getItem('@Blog::posts');
+
+    if (personalPosts) {
+      const parsedData = JSON.parse(personalPosts);
+      const newPersonalPosts = [newPost, ...parsedData];
+
+      localStorage.setItem('@Blog::posts', JSON.stringify(newPersonalPosts));
+    } else {
+      localStorage.setItem('@Blog::posts', JSON.stringify([newPost]));
+    }
+  }, []);
+
   const handleSubmit = useCallback(
     async (data: PostFormData) => {
       try {
@@ -44,20 +58,23 @@ const CreatePost: React.FC = () => {
           abortEarly: false,
         });
 
-        const response = await api.post('/posts', {
+        const post = {
+          id: uuidv4(),
           title: data.title,
           body: data.body,
           userId: user.id,
-        });
+        };
 
-        console.log('response', response.data);
+        addNewPost(post);
 
         addToast('Created with success', {
           appearance: 'success',
           autoDismiss: true,
         });
 
-        history.push('/posts/recent');
+        api.post('/posts', post);
+
+        history.push('/posts/personal');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -67,13 +84,13 @@ const CreatePost: React.FC = () => {
           return;
         }
 
-        addToast('Authentication Error', {
+        addToast('Creation Error', {
           appearance: 'error',
           autoDismiss: true,
         });
       }
     },
-    [addToast, history, user],
+    [addToast, history, user, addNewPost],
   );
 
   return (

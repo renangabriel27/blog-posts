@@ -18,6 +18,7 @@ const ShowPost: React.FC = () => {
   useEffect(() => {
     const loadPost = async (): Promise<void> => {
       const response = await api.get(`/posts/${id}`);
+      console.log('response', response.data);
       setPost(response.data);
     };
 
@@ -44,7 +45,7 @@ const ShowPost: React.FC = () => {
         userId={post.userId}
       />
 
-      <h2>Comments</h2>
+      <h2>Comments - {comments.length}</h2>
 
       {comments.map((comment: CommentProps) => {
         return (

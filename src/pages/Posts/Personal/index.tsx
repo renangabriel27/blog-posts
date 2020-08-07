@@ -9,6 +9,10 @@ import api from '../../../services/api';
 
 import { Container } from './styles';
 
+interface Location {
+  post: PostProps;
+}
+
 const PersonalPosts: React.FC = () => {
   const [myPosts, setMyPosts] = useState<PostProps[]>([]);
 
@@ -17,7 +21,15 @@ const PersonalPosts: React.FC = () => {
   useEffect(() => {
     const loadMyPosts = async (): Promise<void> => {
       const response = await api.get(`/posts?userId=${user.id}`);
+      const personalPosts = localStorage.getItem('@Blog::posts');
+
       const { data } = response;
+
+      if (personalPosts) {
+        const newData = JSON.parse(personalPosts).concat(data);
+        setMyPosts(newData);
+        return;
+      }
 
       setMyPosts(data);
     };
