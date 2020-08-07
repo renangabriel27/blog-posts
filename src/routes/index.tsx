@@ -5,6 +5,7 @@ import Route from './Route';
 
 import ShowPost from '../pages/Posts/Show';
 import CreatePost from '../pages/Posts/Create';
+import EditPost from '../pages/Posts/Edit';
 import RecentPosts from '../pages/Posts/Recent';
 import PersonalPosts from '../pages/Posts/Personal';
 import SignIn from '../pages/SignIn';
@@ -16,6 +17,7 @@ const Routes: React.FC = () => (
     <Route path="/posts/new" component={CreatePost} isPrivate />
     <Route path="/posts/recent" component={RecentPosts} isPrivate />
     <Route path="/posts/personal" component={PersonalPosts} isPrivate />
+    <Route path="/posts/:id/edit" exact component={EditPost} isPrivate />
     <Route path="/posts/:id" component={ShowPost} isPrivate />
   </Switch>
 );

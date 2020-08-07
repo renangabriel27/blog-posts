@@ -1,9 +1,9 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
@@ -13,8 +13,7 @@ import getValidationErrors from '../../../utils/getValidationErrors';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import Header from '../../../components/Header';
-
-import api from '../../../services/api';
+import { PostProps } from '../../../components/Post';
 
 import { Container, Content, AnimationContainer } from './styles';
 
@@ -24,21 +23,37 @@ interface PostFormData {
   body: string;
 }
 
-const CreatePost: React.FC = () => {
+interface LocationState {
+  post: PostProps;
+}
+
+const EditPost: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
+
+  const { state } = useLocation<LocationState>();
 
   const { addToast } = useToasts();
   const { user } = useAuth();
 
-  const addNewPost = useCallback((newPost) => {
-    const personalPosts = localStorage.getItem('@Blog::posts');
+  const [initialData, setInitialData] = useState({ title: '', body: '' });
 
-    if (personalPosts) {
-      const parsedData = JSON.parse(personalPosts);
-      const newPersonalPosts = [newPost, ...parsedData];
+  useEffect(() => {
+    if (state.post) {
+      const { post } = state;
+      setInitialData({ title: post.title, body: post.body });
+    }
+  }, [state]);
 
-      localStorage.setItem('@Blog::posts', JSON.stringify(newPersonalPosts));
+  const editPost = useCallback((newPost) => {
+    const posts = localStorage.getItem('@Blog::posts');
+
+    if (posts) {
+      const parsedData = JSON.parse(posts);
+      const newPosts = [newPost, ...parsedData];
+
+      localStorage.removeItem('@Blog::posts');
+      localStorage.setItem('@Blog::posts', JSON.stringify(newPosts));
     } else {
       localStorage.setItem('@Blog::posts', JSON.stringify([newPost]));
     }
@@ -65,14 +80,12 @@ const CreatePost: React.FC = () => {
           userId: user.id,
         };
 
-        addNewPost(post);
+        editPost(post);
 
-        addToast('Created with success!', {
+        addToast('Updated with success!', {
           appearance: 'success',
           autoDismiss: true,
         });
-
-        api.post('/posts', post);
 
         history.push('/posts/personal');
       } catch (err) {
@@ -84,28 +97,28 @@ const CreatePost: React.FC = () => {
           return;
         }
 
-        addToast('Creation Error', {
+        addToast('Error on update', {
           appearance: 'error',
           autoDismiss: true,
         });
       }
     },
-    [addToast, history, user, addNewPost],
+    [addToast, history, user, editPost],
   );
 
   return (
     <Container>
       <Header>
-        <h1>Write a post</h1>
+        <h1>Edit post</h1>
       </Header>
 
       <Content>
         <AnimationContainer>
-          <Form ref={formRef} onSubmit={handleSubmit}>
+          <Form ref={formRef} initialData={initialData} onSubmit={handleSubmit}>
             <Input name="title" placeholder="Title" />
             <Input name="body" placeholder="Body" />
 
-            <Button type="submit">Create</Button>
+            <Button type="submit">Update</Button>
             <Button onClick={() => history.push('/posts/recent')}>Back</Button>
           </Form>
         </AnimationContainer>
@@ -114,4 +127,4 @@ const CreatePost: React.FC = () => {
   );
 };
 
-export default CreatePost;
+export default EditPost;

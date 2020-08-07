@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { FiTrash, FiEdit, FiEye } from 'react-icons/fi';
+import swal from 'sweetalert';
 
-import { useHistory } from 'react-router-dom';
-import { Container, Title, Description } from './styles';
+import { useAuth } from '../../hooks/auth';
+import {
+  Container,
+  Title,
+  Edit,
+  Show,
+  Delete,
+  Buttons,
+  Description,
+} from './styles';
 
 export interface PostProps {
   id: number;
@@ -11,10 +21,57 @@ export interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({ id, title, body, userId }) => {
-  const history = useHistory();
+  const { user } = useAuth();
+
+  const canEdit = useCallback(() => {
+    return user.id === userId;
+  }, [user, userId]);
+
+  const handleDelete = useCallback(() => {
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this post!',
+      icon: 'warning',
+      dangerMode: true,
+      buttons: ['Cancel', 'Ok'],
+    }).then((willDelete) => {
+      if (willDelete) {
+        const posts = localStorage.getItem('@Blog::posts');
+
+        if (posts) {
+          const parsedData = JSON.parse(posts);
+          const newPosts = parsedData.filter((post: PostProps) => {
+            return post.id !== id;
+          });
+
+          localStorage.removeItem('@Blog::posts');
+          localStorage.setItem('@Blog::posts', JSON.stringify(newPosts));
+          document.location.reload(true);
+        }
+      }
+    });
+  }, [id]);
 
   return (
-    <Container onClick={() => history.push(`/posts/${id}`)}>
+    <Container>
+      <Buttons>
+        <Show to={`/posts/${id}`}>
+          <FiEye size={16} />
+        </Show>
+        {canEdit() && (
+          <Edit
+            to={{
+              pathname: `/posts/${id}/edit`,
+              state: { post: { id, title, body, userId } },
+            }}
+          >
+            <FiEdit size={16} />
+          </Edit>
+        )}
+        <Delete onClick={() => handleDelete()}>
+          <FiTrash size={16} />
+        </Delete>
+      </Buttons>
       <Title>{title}</Title>
       <Description>{body}</Description>
     </Container>
