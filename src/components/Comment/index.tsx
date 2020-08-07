@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useHistory } from 'react-router-dom';
 import { Container, Title, Description } from './styles';
 
 export interface CommentProps {
@@ -12,8 +11,6 @@ export interface CommentProps {
 }
 
 const Comment: React.FC<CommentProps> = ({ id, name, email, body, postId }) => {
-  const history = useHistory();
-
   return (
     <Container>
       <Title>{name}</Title>
