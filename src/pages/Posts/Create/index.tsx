@@ -1,6 +1,5 @@
 import React, { useRef, useCallback } from 'react';
 
-import { FiUser } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
@@ -12,10 +11,11 @@ import getValidationErrors from '../../../utils/getValidationErrors';
 
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
+import Header from '../../../components/Header';
 
 import api from '../../../services/api';
 
-import { Container, Content, AnimationContainer } from '../../SignIn/styles';
+import { Container, Content, AnimationContainer } from './styles';
 
 interface PostFormData {
   userId: number;
@@ -57,7 +57,7 @@ const CreatePost: React.FC = () => {
           autoDismiss: true,
         });
 
-        history.push('/home');
+        history.push('/posts/recent');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -78,13 +78,15 @@ const CreatePost: React.FC = () => {
 
   return (
     <Container>
+      <Header>
+        <h1>Write a post</h1>
+      </Header>
+
       <Content>
         <AnimationContainer>
           <Form ref={formRef} onSubmit={handleSubmit}>
-            <h1>Login</h1>
-
-            <Input name="title" icon={FiUser} placeholder="Title" />
-            <Input name="body" icon={FiUser} placeholder="Body" />
+            <Input name="title" placeholder="Title" />
+            <Input name="body" placeholder="Body" />
 
             <Button type="submit">Create</Button>
           </Form>

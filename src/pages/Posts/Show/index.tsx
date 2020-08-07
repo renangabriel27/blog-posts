@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import Button from '../../../components/Button';
+import Header from '../../../components/Header';
 import Comment, { CommentProps } from '../../../components/Comment';
 import Post, { PostProps } from '../../../components/Post';
 import api from '../../../services/api';
@@ -11,7 +11,6 @@ import { Container } from './styles';
 
 const ShowPost: React.FC = () => {
   const { id } = useParams();
-  const history = useHistory();
 
   const [post, setPost] = useState<PostProps>({} as PostProps);
   const [comments, setComments] = useState<CommentProps[]>([]);
@@ -33,7 +32,9 @@ const ShowPost: React.FC = () => {
 
   return (
     <Container>
-      <h1>Post</h1>
+      <Header>
+        <h1>Post</h1>
+      </Header>
 
       <Post
         key={post.id}
@@ -48,6 +49,7 @@ const ShowPost: React.FC = () => {
       {comments.map((comment: CommentProps) => {
         return (
           <Comment
+            key={comment.id}
             body={comment.body}
             email={comment.email}
             id={comment.id}

@@ -40,7 +40,7 @@ const SignIn: React.FC = () => {
 
         await signIn(data.id);
 
-        history.push('/home');
+        history.push('/posts/recent');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);

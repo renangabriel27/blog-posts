@@ -3,17 +3,19 @@ import { Switch } from 'react-router-dom';
 
 import Route from './Route';
 
-import Home from '../pages/Home';
 import ShowPost from '../pages/Posts/Show';
 import CreatePost from '../pages/Posts/Create';
+import RecentPosts from '../pages/Posts/Recent';
+import PersonalPosts from '../pages/Posts/Personal';
 import SignIn from '../pages/SignIn';
 
 const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={SignIn} />
 
-    <Route path="/home" component={Home} isPrivate />
     <Route path="/posts/new" component={CreatePost} isPrivate />
+    <Route path="/posts/personal" component={PersonalPosts} isPrivate />
+    <Route path="/posts/recent" component={RecentPosts} isPrivate />
     <Route path="/posts/:id" component={ShowPost} isPrivate />
   </Switch>
 );

@@ -5,5 +5,3 @@ export const Container = styled.div`
   margin: 0 auto;
   padding-top: 50px;
 `;
-
-export const Header = styled.div``;
