@@ -17,9 +17,24 @@ const ShowPost: React.FC = () => {
 
   useEffect(() => {
     const loadPost = async (): Promise<void> => {
-      const response = await api.get(`/posts/${id}`);
-      console.log('response', response.data);
-      setPost(response.data);
+      try {
+        const response = await api.get(`/posts/${id}`);
+        setPost(response.data);
+      } catch (err) {
+        const { status } = err.response;
+
+        if (status === 404) {
+          const posts = localStorage.getItem('@Blog::posts');
+
+          if (posts) {
+            const parsedData = JSON.parse(posts);
+            const showPost = parsedData.find((postData: PostProps) => {
+              return postData.id === id;
+            });
+            setPost(showPost);
+          }
+        }
+      }
     };
 
     const loadComments = async (): Promise<void> => {

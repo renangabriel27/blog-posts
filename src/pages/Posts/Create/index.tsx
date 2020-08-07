@@ -106,7 +106,7 @@ const CreatePost: React.FC = () => {
             <Input name="body" placeholder="Body" />
 
             <Button type="submit">Create</Button>
-            <Button onClick={() => history.push('/posts/recent')}>Back</Button>
+            <Button onClick={() => history.goBack()}>Back</Button>
           </Form>
         </AnimationContainer>
       </Content>
