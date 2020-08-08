@@ -8,9 +8,13 @@ export default createGlobalStyle`
     outline: 0;
   }
 
+  input {
+    min-height: 100%;
+  }
+
   body {
-    background: #23292e;
-    color: #fff;
+    background: var(--background);
+    color: var(--white);
     -webkit-font-smoothing: antiliased;
   }
 
@@ -25,5 +29,14 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+
+  :root {
+    --background: #23292e;
+    --secondary: #ff9000;
+    --dark-light: #30363f;
+    --error: #c53030;
+    --black: #000;
+    --white: #fff;
   }
 `;

@@ -7,50 +7,40 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
-  background: #232129;
-
-  border: 2px solid #232129;
-  margin: 20px 0;
-  color: #666360;
-
-  padding: 16px;
-  width: 100%;
-
   display: flex;
   align-items: center;
 
-  & + div {
-    margin-top: 8px;
-  }
+  background: var(--dark-light);
+  border: 1px solid var(--dark-light);
+
+  margin: 20px 0;
+  padding: 20px;
+  width: 100%;
 
   ${(props) =>
     props.isErrored &&
     css`
-      border-color: #c53030;
+      border-color: var(--error);
     `}
 
   ${(props) =>
     props.isFocused &&
     css`
-      color: #ff9000;
-      border-color: #ff9000;
+      color: var(--white);
+      border-color: var(--white);
     `}
 
   ${(props) =>
     props.isFilled &&
     css`
-      color: #ff9000;
+      color: var(--secondary);
     `}
 
   input {
     flex: 1;
-    background: transparent;
+    background: none;
     border: 0;
-    color: #f4ede8;
-
-    &::placeholder {
-      color: #666360;
-    }
+    color: var(--white);
   }
 
   svg {
@@ -59,5 +49,5 @@ export const Container = styled.div<ContainerProps>`
 `;
 
 export const ErrorMessage = styled.p`
-  color: #c53030;
+  color: var(--error);
 `;

@@ -1,16 +1,15 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { shade } from 'polished';
 
 export const Container = styled.div`
-  background: #30363f;
-  border: 1px solid #000;
+  background: var(--dark-light);
+  border: 1px solid var(--black);
   padding: 20px 20px 50px 20px;
   margin: 10px 0;
   cursor: pointer;
 
   &:hover {
-    background: ${shade(0.2, '#30363f')};
+    border-color: var(--white);
   }
 `;
 
@@ -34,7 +33,7 @@ export const Button = styled(Link)`
   border: none;
   padding: 5px;
   margin-right: 2px;
-  color: #fff;
+  color: var(--white);
   text-decoration: none;
 `;
 
@@ -45,7 +44,7 @@ export const Edit = styled(Button)``;
 export const Delete = styled.button`
   border: none;
   padding: 5px;
-  color: #fff;
+  color: var(--white);
   background: transparent;
   text-decoration: none;
 `;

@@ -1,15 +1,14 @@
 import styled from 'styled-components';
-import { shade } from 'polished';
 
 export const Container = styled.div`
-  background: #30363f;
-  border: 1px solid #000;
+  background: var(--dark-light);
+  border: 1px solid var(--black);
   padding: 10px;
   margin: 10px 0;
   cursor: pointer;
 
   &:hover {
-    background: ${shade(0.2, '#30363f')};
+    border-color: var(--white);
   }
 `;
 

@@ -2,14 +2,12 @@ import React from 'react';
 
 import Menu from '../Menu';
 
-import { Container } from './styles';
-
 const Header: React.FC = ({ children }) => {
   return (
-    <Container>
+    <div>
       {children}
       <Menu />
-    </Container>
+    </div>
   );
 };
 
