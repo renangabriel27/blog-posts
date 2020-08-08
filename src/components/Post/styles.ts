@@ -6,6 +6,7 @@ export const Container = styled.div`
   border: 1px solid var(--black);
   padding: 20px 20px 50px 20px;
   margin: 10px 0;
+  word-wrap: break-word;
   cursor: pointer;
 
   &:hover {

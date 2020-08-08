@@ -11,6 +11,7 @@ import { useAuth } from '../../../hooks/auth';
 import getValidationErrors from '../../../utils/getValidationErrors';
 
 import Input from '../../../components/Input';
+import Textarea from '../../../components/Textarea';
 import Button from '../../../components/Button';
 import Header from '../../../components/Header';
 import { PostProps } from '../../../components/Post';
@@ -126,7 +127,7 @@ const EditPost: React.FC = () => {
         <AnimationContainer>
           <Form ref={formRef} initialData={initialData} onSubmit={handleSubmit}>
             <Input name="title" placeholder="Title" />
-            <Input name="body" placeholder="Body" />
+            <Textarea name="body" placeholder="Body" />
 
             <Button type="submit">Update</Button>
             <Button onClick={() => history.goBack()}>Back</Button>

@@ -5,6 +5,7 @@ export const Container = styled.div`
   border: 1px solid var(--black);
   padding: 10px;
   margin: 10px 0;
+  word-wrap: break-word;
   cursor: pointer;
 
   &:hover {
