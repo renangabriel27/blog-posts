@@ -8,7 +8,7 @@ import { FormHandles } from '@unform/core';
 import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../../../hooks/auth';
-import { useLocalStorage } from '../../../hooks/storage';
+import { useLocalStorage, updateLocalStorage } from '../../../hooks/storage';
 import { POSTS_KEY } from '../../../contants/local-storage';
 
 import getValidationErrors from '../../../utils/getValidationErrors';
@@ -61,12 +61,9 @@ const EditPost: React.FC = () => {
           return data.id.toString() !== params.id;
         });
 
-        const newPosts = [newPost, ...updatedData];
-
-        localStorage.removeItem(storageKey);
-        localStorage.setItem(storageKey, JSON.stringify(newPosts));
+        updateLocalStorage(storageKey, [newPost, ...updatedData]);
       } else {
-        localStorage.setItem(storageKey, JSON.stringify([newPost]));
+        updateLocalStorage(storageKey, [newPost]);
       }
     },
     [storageKey, params, posts],

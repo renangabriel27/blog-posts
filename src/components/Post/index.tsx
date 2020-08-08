@@ -3,6 +3,9 @@ import { FiTrash, FiEdit, FiEye } from 'react-icons/fi';
 import swal from 'sweetalert';
 
 import { useAuth } from '../../hooks/auth';
+import { useLocalStorage, updateLocalStorage } from '../../hooks/storage';
+import { POSTS_KEY } from '../../contants/local-storage';
+
 import {
   Container,
   Title,
@@ -18,11 +21,19 @@ export interface PostProps {
   title: string;
   body: string;
   userId: number;
+  showOptions?: boolean;
 }
 
-const Post: React.FC<PostProps> = ({ id, title, body, userId }) => {
+const Post: React.FC<PostProps> = ({
+  id,
+  title,
+  body,
+  userId,
+  showOptions = true,
+}) => {
   const { user } = useAuth();
-  const storageKey = `@Blog::${user.id}::posts`;
+  const storageKey = POSTS_KEY();
+  const [posts] = useLocalStorage(storageKey, []);
 
   const canEdit = useCallback(() => {
     return user.id === userId;
@@ -37,42 +48,41 @@ const Post: React.FC<PostProps> = ({ id, title, body, userId }) => {
       buttons: ['Cancel', 'Ok'],
     }).then((willDelete) => {
       if (willDelete) {
-        const posts = localStorage.getItem(storageKey);
-
         if (posts) {
-          const parsedData = JSON.parse(posts);
-          const newPosts = parsedData.filter((post: PostProps) => {
+          const newPosts = posts.filter((post: PostProps) => {
             return post.id !== id;
           });
 
-          localStorage.removeItem(storageKey);
-          localStorage.setItem(storageKey, JSON.stringify(newPosts));
+          updateLocalStorage(storageKey, newPosts);
           document.location.reload(true);
         }
       }
     });
-  }, [id, storageKey]);
+  }, [id, posts, storageKey]);
 
   return (
     <Container>
-      <Buttons>
-        <Show to={`/posts/${id}`}>
-          <FiEye size={16} />
-        </Show>
-        {canEdit() && (
-          <Edit
-            to={{
-              pathname: `/posts/${id}/edit`,
-              state: { post: { id, title, body, userId } },
-            }}
-          >
-            <FiEdit size={16} />
-          </Edit>
-        )}
-        <Delete onClick={() => handleDelete()}>
-          <FiTrash size={16} />
-        </Delete>
-      </Buttons>
+      {showOptions && (
+        <Buttons>
+          <Show to={`/posts/${id}`}>
+            <FiEye size={16} />
+          </Show>
+          {canEdit() && (
+            <Edit
+              to={{
+                pathname: `/posts/${id}/edit`,
+                state: { post: { id, title, body, userId } },
+              }}
+            >
+              <FiEdit size={16} />
+            </Edit>
+          )}
+          <Delete onClick={() => handleDelete()}>
+            <FiTrash size={16} />
+          </Delete>
+        </Buttons>
+      )}
+
       <Title>{title}</Title>
       <Description>{body}</Description>
     </Container>

@@ -58,6 +58,7 @@ const ShowPost: React.FC = () => {
         title={post.title}
         body={post.body}
         userId={post.userId}
+        showOptions={false}
       />
 
       <h2>Comments - {comments.length}</h2>

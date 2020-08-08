@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../../../hooks/auth';
-import { useLocalStorage } from '../../../hooks/storage';
+import { useLocalStorage, updateLocalStorage } from '../../../hooks/storage';
 import { POSTS_KEY } from '../../../contants/local-storage';
 
 import getValidationErrors from '../../../utils/getValidationErrors';
@@ -42,10 +42,9 @@ const CreatePost: React.FC = () => {
   const addNewPost = useCallback(
     (newPost) => {
       if (posts) {
-        const newPersonalPosts = [newPost, ...posts];
-        localStorage.setItem(storageKey, JSON.stringify(newPersonalPosts));
+        updateLocalStorage(storageKey, [newPost, ...posts]);
       } else {
-        localStorage.setItem(storageKey, JSON.stringify([newPost]));
+        updateLocalStorage(storageKey, [newPost]);
       }
     },
     [storageKey, posts],
