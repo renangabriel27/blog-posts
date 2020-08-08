@@ -41,7 +41,7 @@ export const Container = styled.div<ContainerProps>`
     background: none;
     border: 0;
     color: var(--white);
-    height: 200px;
+    height: 100px;
     font-family: IBM Plex Mono, serif;
     font-size: 16px;
   }

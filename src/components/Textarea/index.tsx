@@ -53,11 +53,11 @@ const Textarea: React.FC<TextareaProps> = ({ name, icon: Icon, ...rest }) => {
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           ref={textareaRef}
-          placeholder="Body"
           defaultValue={value}
           onChange={(event) => {
             setValue(event.target.value);
           }}
+          {...rest}
         />
       </Container>
       {!!error && <ErrorMessage>* {error}</ErrorMessage>}
