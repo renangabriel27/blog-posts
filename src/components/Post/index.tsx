@@ -97,9 +97,11 @@ const Post: React.FC<PostProps> = ({
       <Title>{title}</Title>
       <Description>{body}</Description>
 
-      <Creator>
-        {creator.name}, {creator.website}
-      </Creator>
+      {!!creator && (
+        <Creator>
+          {creator.name}, {creator.website}
+        </Creator>
+      )}
     </Container>
   );
 };

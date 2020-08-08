@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+
+import * as Yup from 'yup';
+import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
 
 import { useParams } from 'react-router-dom';
 import { useLocalStorage } from '../../../hooks/storage';
@@ -6,13 +10,20 @@ import { useSwr } from '../../../hooks/swr';
 import { POSTS_KEY } from '../../../contants/local-storage';
 
 import Header from '../../../components/Header';
-import Comment, { CommentProps } from '../../../components/Comment';
-import Post, { PostProps } from '../../../components/Post';
+import Input from '../../../components/Input';
+import Textarea from '../../../components/Textarea';
+import Button from '../../../components/Button';
+import Comments from '../../../components/Comments';
+import { CommentProps } from '../../../components/Comment';
+import { PostProps } from '../../../components/Post';
+import Posts from '../../../components/Posts';
 
 import { Container } from '../../../styles/main';
 
 const ShowPost: React.FC = () => {
   const { id } = useParams();
+  const formRef = useRef<FormHandles>(null);
+  const [showForm, setShowForm] = useState(false);
   const [allPosts] = useLocalStorage(POSTS_KEY(), []);
 
   const { data: postsData, error: postsError } = useSwr<PostProps>(
@@ -43,7 +54,11 @@ const ShowPost: React.FC = () => {
     }
   }, [id, postsData, postsError, allPosts, commentsData]);
 
-  if (!post && !postsData && !commentsData) {
+  const handleSubmit = useCallback(() => {
+    console.log('handled');
+  }, []);
+
+  if (!post || !commentsData) {
     return (
       <Container>
         <Header>
@@ -60,29 +75,22 @@ const ShowPost: React.FC = () => {
         <h1>Post</h1>
       </Header>
 
-      <Post
-        key={post.id}
-        id={post.id}
-        title={post.title}
-        body={post.body}
-        userId={post.userId}
-        showOptions={false}
-      />
+      <Posts posts={[post]} showOptions={false} />
 
-      <h2>Comments - {comments.length}</h2>
+      <Button type="submit" onClick={() => setShowForm(!showForm)}>
+        Add comment
+      </Button>
 
-      {comments.map((comment: CommentProps) => {
-        return (
-          <Comment
-            key={comment.id}
-            body={comment.body}
-            email={comment.email}
-            id={comment.id}
-            name={comment.name}
-            postId={comment.postId}
-          />
-        );
-      })}
+      {showForm && (
+        <Form ref={formRef} onSubmit={handleSubmit}>
+          <Input name="title" placeholder="Title" />
+          <Textarea name="body" placeholder="Body" />
+
+          <Button type="submit">Comment</Button>
+        </Form>
+      )}
+
+      <Comments comments={comments} />
     </Container>
   );
 };

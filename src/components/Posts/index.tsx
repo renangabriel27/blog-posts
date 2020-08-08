@@ -6,7 +6,7 @@ import { USERS_KEY } from '../../contants/local-storage';
 import { useSwr } from '../../hooks/swr';
 import { useLocalStorage } from '../../hooks/storage';
 
-const Posts: React.FC<any> = ({ posts }) => {
+const Posts: React.FC<any> = ({ posts, showOptions = true }) => {
   const [users, setUsers] = useLocalStorage(USERS_KEY, []);
   const { data: usersData } = useSwr<PostProps[]>('/users');
 
@@ -35,6 +35,7 @@ const Posts: React.FC<any> = ({ posts }) => {
         title={post.title}
         body={post.body}
         userId={post.userId}
+        showOptions={showOptions}
         creator={selectUser(post.userId)}
       />
     );
