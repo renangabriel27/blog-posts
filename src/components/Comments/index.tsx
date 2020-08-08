@@ -2,13 +2,11 @@ import React from 'react';
 
 import Comment, { CommentProps } from '../Comment';
 
-import { Container, Title } from './styles';
+import { Container } from './styles';
 
 const Comments: React.FC<any> = ({ comments }) => {
   return (
     <Container>
-      {comments.length > 0 && <Title>Comments - {comments.length}</Title>}
-
       {comments.map((comment: CommentProps) => {
         return (
           <Comment

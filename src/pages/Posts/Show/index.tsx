@@ -3,11 +3,17 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import * as Yup from 'yup';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
-
 import { useParams } from 'react-router-dom';
-import { useLocalStorage } from '../../../hooks/storage';
+
+import { v4 as uuidv4 } from 'uuid';
+import { useToasts } from 'react-toast-notifications';
+import { useAuth } from '../../../hooks/auth';
+
+import { useLocalStorage, updateLocalStorage } from '../../../hooks/storage';
 import { useSwr } from '../../../hooks/swr';
-import { POSTS_KEY } from '../../../contants/local-storage';
+import { POSTS_KEY, COMMENTS_KEY } from '../../../contants/local-storage';
+
+import getValidationErrors from '../../../utils/getValidationErrors';
 
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
@@ -22,6 +28,9 @@ import { Container } from '../../../styles/main';
 
 const ShowPost: React.FC = () => {
   const { id } = useParams();
+  const { addToast } = useToasts();
+  const { user } = useAuth();
+
   const formRef = useRef<FormHandles>(null);
   const [showForm, setShowForm] = useState(false);
   const [allPosts] = useLocalStorage(POSTS_KEY(), []);
@@ -34,7 +43,7 @@ const ShowPost: React.FC = () => {
   );
 
   const [post, setPost] = useState<PostProps>({} as PostProps);
-  const [comments, setComments] = useState<CommentProps[]>([]);
+  const [comments] = useLocalStorage(COMMENTS_KEY, []);
 
   useEffect(() => {
     if (postsData) {
@@ -48,17 +57,79 @@ const ShowPost: React.FC = () => {
 
       setPost(showPost);
     }
+  }, [id, postsData, postsError, allPosts]);
 
-    if (commentsData) {
-      setComments(commentsData);
-    }
-  }, [id, postsData, postsError, allPosts, commentsData]);
+  const selectMyComments = useCallback(
+    (myComments) => {
+      return myComments.filter((myComment: CommentProps) => {
+        return myComment.postId === id;
+      });
+    },
+    [id],
+  );
 
-  const handleSubmit = useCallback(() => {
-    console.log('handled');
-  }, []);
+  const addNewComment = useCallback(
+    (newComment) => {
+      if (comments.length > 0) {
+        localStorage.removeItem(COMMENTS_KEY);
+        updateLocalStorage(COMMENTS_KEY, [newComment, ...comments]);
+      } else {
+        updateLocalStorage(COMMENTS_KEY, [newComment]);
+      }
+    },
+    [comments],
+  );
 
-  if (!post || !commentsData) {
+  const handleAddComment = useCallback(
+    async (data) => {
+      try {
+        formRef.current?.setErrors({});
+
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Name required'),
+          body: Yup.string().required('Content required'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        const comment = {
+          id: uuidv4(),
+          postId: id,
+          name: data.name,
+          body: data.body,
+          email: user.email,
+        };
+
+        addNewComment(comment);
+
+        addToast('Comment added with success!', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        setShowForm(false);
+        document.location.reload(true);
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+
+          formRef.current?.setErrors(errors);
+
+          return;
+        }
+
+        addToast('Error on comment', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
+    },
+    [addToast, id, addNewComment, user],
+  );
+
+  if (!post || !comments || !commentsData) {
     return (
       <Container>
         <Header>
@@ -75,22 +146,25 @@ const ShowPost: React.FC = () => {
         <h1>Post</h1>
       </Header>
 
-      <Posts posts={[post]} showOptions={false} />
+      <Posts key={id} posts={[post]} showOptions={false} />
 
       <Button type="submit" onClick={() => setShowForm(!showForm)}>
         Add comment
       </Button>
 
       {showForm && (
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <Input name="title" placeholder="Title" />
-          <Textarea name="body" placeholder="Body" />
+        <Form ref={formRef} onSubmit={handleAddComment}>
+          <Input name="name" placeholder="Name" />
+          <Textarea name="body" placeholder="Content" />
 
           <Button type="submit">Comment</Button>
         </Form>
       )}
 
-      <Comments comments={comments} />
+      <h1>Comments</h1>
+
+      <Comments comments={selectMyComments(comments)} />
+      <Comments comments={commentsData} />
     </Container>
   );
 };
