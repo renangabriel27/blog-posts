@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
@@ -31,10 +31,13 @@ const EditPost: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
 
+  const params = useParams<{ id: string }>();
+
   const { state } = useLocation<LocationState>();
 
   const { addToast } = useToasts();
   const { user } = useAuth();
+  const storageKey = `@Blog::${user.id}::posts`;
 
   const [initialData, setInitialData] = useState({ title: '', body: '' });
 
@@ -45,19 +48,25 @@ const EditPost: React.FC = () => {
     }
   }, [state]);
 
-  const editPost = useCallback((newPost) => {
-    const posts = localStorage.getItem('@Blog::posts');
+  const editPost = useCallback(
+    (newPost) => {
+      const posts = localStorage.getItem(storageKey);
 
-    if (posts) {
-      const parsedData = JSON.parse(posts);
-      const newPosts = [newPost, ...parsedData];
+      if (posts) {
+        const updatedData = JSON.parse(posts).filter((data: PostProps) => {
+          return data.id.toString() !== params.id;
+        });
 
-      localStorage.removeItem('@Blog::posts');
-      localStorage.setItem('@Blog::posts', JSON.stringify(newPosts));
-    } else {
-      localStorage.setItem('@Blog::posts', JSON.stringify([newPost]));
-    }
-  }, []);
+        const newPosts = [newPost, ...updatedData];
+
+        localStorage.removeItem(storageKey);
+        localStorage.setItem(storageKey, JSON.stringify(newPosts));
+      } else {
+        localStorage.setItem(storageKey, JSON.stringify([newPost]));
+      }
+    },
+    [storageKey, params],
+  );
 
   const handleSubmit = useCallback(
     async (data: PostFormData) => {

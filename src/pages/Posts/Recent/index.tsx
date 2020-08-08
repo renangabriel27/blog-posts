@@ -13,27 +13,42 @@ const RecentPosts: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const { user } = useAuth();
+  const storageKey = `@Blog::${user.id}::posts`;
 
   useEffect(() => {
     const loadRecentPosts = async (): Promise<void> => {
       try {
+        const posts = localStorage.getItem(storageKey);
+
+        if (posts) {
+          setRecentPosts(JSON.parse(posts));
+          setLoading(false);
+        }
+
         const response = await api.get('/posts');
         const { data } = response;
-        const latestPosts = data.slice(0, 3);
-        setRecentPosts(latestPosts);
-        setLoading(false);
+        const latestPosts = data.slice(0, 5);
+
+        if (!posts) {
+          localStorage.setItem(storageKey, JSON.stringify(latestPosts));
+          setRecentPosts(latestPosts);
+          setLoading(false);
+        }
       } catch (err) {
         console.error(err);
       }
     };
 
     loadRecentPosts();
-  }, []);
+  }, [storageKey]);
 
   if (loading) {
     return (
       <Container>
-        <Header />
+        <Header>
+          <h1>Welcome {user.name}!</h1>
+        </Header>
+
         <h1>Loading...</h1>
       </Container>
     );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
+import { useAuth } from '../../../hooks/auth';
 
 import Header from '../../../components/Header';
 import Comment, { CommentProps } from '../../../components/Comment';
@@ -15,6 +16,9 @@ const ShowPost: React.FC = () => {
   const [post, setPost] = useState<PostProps>({} as PostProps);
   const [comments, setComments] = useState<CommentProps[]>([]);
 
+  const { user } = useAuth();
+  const storageKey = `@Blog::${user.id}::posts`;
+
   useEffect(() => {
     const loadPost = async (): Promise<void> => {
       try {
@@ -24,7 +28,7 @@ const ShowPost: React.FC = () => {
         const { status } = err.response;
 
         if (status === 404) {
-          const posts = localStorage.getItem('@Blog::posts');
+          const posts = localStorage.getItem(storageKey);
 
           if (posts) {
             const parsedData = JSON.parse(posts);
@@ -44,7 +48,7 @@ const ShowPost: React.FC = () => {
 
     loadPost();
     loadComments();
-  }, [id]);
+  }, [id, storageKey]);
 
   return (
     <Container>

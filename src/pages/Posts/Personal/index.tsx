@@ -5,37 +5,26 @@ import Post, { PostProps } from '../../../components/Post';
 
 import { useAuth } from '../../../hooks/auth';
 
-import api from '../../../services/api';
-
 import { Container } from './styles';
-
-interface Location {
-  post: PostProps;
-}
 
 const PersonalPosts: React.FC = () => {
   const [myPosts, setMyPosts] = useState<PostProps[]>([]);
 
   const { user } = useAuth();
+  const storageKey = `@Blog::${user.id}::posts`;
 
   useEffect(() => {
     const loadMyPosts = async (): Promise<void> => {
-      const response = await api.get(`/posts?userId=${user.id}`);
-      const personalPosts = localStorage.getItem('@Blog::posts');
-
-      const { data } = response;
-
-      if (personalPosts) {
-        const newData = JSON.parse(personalPosts).concat(data);
-        setMyPosts(newData);
-        return;
-      }
-
-      setMyPosts(data);
+      const allPosts = localStorage.getItem(storageKey);
+      const parsedPosts = JSON.parse(allPosts || '');
+      const onlyMyPosts = parsedPosts.filter((parsedData: PostProps) => {
+        return parsedData.userId === user.id;
+      });
+      setMyPosts(onlyMyPosts);
     };
 
     loadMyPosts();
-  }, [user]);
+  }, [user, storageKey]);
 
   return (
     <Container>

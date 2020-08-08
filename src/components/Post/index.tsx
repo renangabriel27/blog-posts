@@ -22,6 +22,7 @@ export interface PostProps {
 
 const Post: React.FC<PostProps> = ({ id, title, body, userId }) => {
   const { user } = useAuth();
+  const storageKey = `@Blog::${user.id}::posts`;
 
   const canEdit = useCallback(() => {
     return user.id === userId;
@@ -36,7 +37,7 @@ const Post: React.FC<PostProps> = ({ id, title, body, userId }) => {
       buttons: ['Cancel', 'Ok'],
     }).then((willDelete) => {
       if (willDelete) {
-        const posts = localStorage.getItem('@Blog::posts');
+        const posts = localStorage.getItem(storageKey);
 
         if (posts) {
           const parsedData = JSON.parse(posts);
@@ -44,13 +45,13 @@ const Post: React.FC<PostProps> = ({ id, title, body, userId }) => {
             return post.id !== id;
           });
 
-          localStorage.removeItem('@Blog::posts');
-          localStorage.setItem('@Blog::posts', JSON.stringify(newPosts));
+          localStorage.removeItem(storageKey);
+          localStorage.setItem(storageKey, JSON.stringify(newPosts));
           document.location.reload(true);
         }
       }
     });
-  }, [id]);
+  }, [id, storageKey]);
 
   return (
     <Container>

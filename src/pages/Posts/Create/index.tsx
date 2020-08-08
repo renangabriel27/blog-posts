@@ -30,19 +30,23 @@ const CreatePost: React.FC = () => {
 
   const { addToast } = useToasts();
   const { user } = useAuth();
+  const storageKey = `@Blog::${user.id}::posts`;
 
-  const addNewPost = useCallback((newPost) => {
-    const personalPosts = localStorage.getItem('@Blog::posts');
+  const addNewPost = useCallback(
+    (newPost) => {
+      const personalPosts = localStorage.getItem(storageKey);
 
-    if (personalPosts) {
-      const parsedData = JSON.parse(personalPosts);
-      const newPersonalPosts = [newPost, ...parsedData];
+      if (personalPosts) {
+        const parsedData = JSON.parse(personalPosts);
+        const newPersonalPosts = [newPost, ...parsedData];
 
-      localStorage.setItem('@Blog::posts', JSON.stringify(newPersonalPosts));
-    } else {
-      localStorage.setItem('@Blog::posts', JSON.stringify([newPost]));
-    }
-  }, []);
+        localStorage.setItem(storageKey, JSON.stringify(newPersonalPosts));
+      } else {
+        localStorage.setItem(storageKey, JSON.stringify([newPost]));
+      }
+    },
+    [storageKey],
+  );
 
   const handleSubmit = useCallback(
     async (data: PostFormData) => {
