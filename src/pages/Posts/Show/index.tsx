@@ -30,13 +30,12 @@ const ShowPost: React.FC = () => {
       setPost(postsData);
     }
 
-    if (postsError) {
-      if (allPosts) {
-        const showPost = allPosts.find((item: PostProps) => {
-          return item.id === id;
-        });
-        setPost(showPost);
-      }
+    if (postsError && allPosts) {
+      const showPost = allPosts.find((item: PostProps) => {
+        return item.id === id;
+      });
+
+      setPost(showPost);
     }
 
     if (commentsData) {
