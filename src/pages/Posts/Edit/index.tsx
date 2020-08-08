@@ -15,7 +15,8 @@ import Button from '../../../components/Button';
 import Header from '../../../components/Header';
 import { PostProps } from '../../../components/Post';
 
-import { Container, Content, AnimationContainer } from './styles';
+import { Container, Content } from '../../../styles/main';
+import { AnimationContainer } from '../../../styles/form';
 
 interface PostFormData {
   userId: number;

@@ -5,3 +5,8 @@ export const Container = styled.div`
   margin: 0 auto;
   padding-top: 50px;
 `;
+
+export const Content = styled.div`
+  width: 100%;
+  margin-top: 20px;
+`;

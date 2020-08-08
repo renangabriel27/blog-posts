@@ -6,7 +6,7 @@ import { useAuth } from '../../../hooks/auth';
 
 import api from '../../../services/api';
 
-import { Container } from './styles';
+import { Container } from '../../../styles/main';
 
 const RecentPosts: React.FC = () => {
   const [recentPosts, setRecentPosts] = useState<PostProps[]>([]);

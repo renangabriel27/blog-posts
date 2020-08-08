@@ -12,7 +12,8 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { Container, Content, AnimationContainer } from './styles';
+import { Container, Content } from './styles';
+import { AnimationContainer } from '../../styles/form';
 
 interface SignInFormData {
   id: string;

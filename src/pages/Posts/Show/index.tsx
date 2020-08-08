@@ -8,7 +8,7 @@ import Comment, { CommentProps } from '../../../components/Comment';
 import Post, { PostProps } from '../../../components/Post';
 import api from '../../../services/api';
 
-import { Container } from './styles';
+import { Container } from '../../../styles/main';
 
 const ShowPost: React.FC = () => {
   const { id } = useParams();

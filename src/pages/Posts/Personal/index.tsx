@@ -5,7 +5,7 @@ import Post, { PostProps } from '../../../components/Post';
 
 import { useAuth } from '../../../hooks/auth';
 
-import { Container } from './styles';
+import { Container } from '../../../styles/main';
 
 const PersonalPosts: React.FC = () => {
   const [myPosts, setMyPosts] = useState<PostProps[]>([]);

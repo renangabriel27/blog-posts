@@ -16,7 +16,8 @@ import Header from '../../../components/Header';
 
 import api from '../../../services/api';
 
-import { Container, Content, AnimationContainer } from './styles';
+import { Container, Content } from '../../../styles/main';
+import { AnimationContainer } from '../../../styles/form';
 
 interface PostFormData {
   userId: number;
