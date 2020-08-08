@@ -7,7 +7,7 @@ import { Container, Title } from './styles';
 const Comments: React.FC<any> = ({ comments }) => {
   return (
     <Container>
-      <Title>Comments - {comments.length}</Title>
+      {comments.length > 0 && <Title>Comments - {comments.length}</Title>}
 
       {comments.map((comment: CommentProps) => {
         return (
