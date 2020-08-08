@@ -1,13 +1,16 @@
 import React, { useRef, useCallback } from 'react';
 
-import { FormHandles } from '@unform/core';
-import { Form } from '@unform/web';
 import * as Yup from 'yup';
+import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
 import { useHistory } from 'react-router-dom';
 
 import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../../../hooks/auth';
+import { useLocalStorage } from '../../../hooks/storage';
+import { POSTS_KEY } from '../../../contants/local-storage';
+
 import getValidationErrors from '../../../utils/getValidationErrors';
 
 import Input from '../../../components/Input';
@@ -32,22 +35,20 @@ const CreatePost: React.FC = () => {
 
   const { addToast } = useToasts();
   const { user } = useAuth();
-  const storageKey = `@Blog::${user.id}::posts`;
+
+  const storageKey = POSTS_KEY();
+  const [posts] = useLocalStorage(storageKey, []);
 
   const addNewPost = useCallback(
     (newPost) => {
-      const personalPosts = localStorage.getItem(storageKey);
-
-      if (personalPosts) {
-        const parsedData = JSON.parse(personalPosts);
-        const newPersonalPosts = [newPost, ...parsedData];
-
+      if (posts) {
+        const newPersonalPosts = [newPost, ...posts];
         localStorage.setItem(storageKey, JSON.stringify(newPersonalPosts));
       } else {
         localStorage.setItem(storageKey, JSON.stringify([newPost]));
       }
     },
-    [storageKey],
+    [storageKey, posts],
   );
 
   const handleSubmit = useCallback(

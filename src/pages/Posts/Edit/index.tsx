@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-
-import { FormHandles } from '@unform/core';
-import { Form } from '@unform/web';
-import * as Yup from 'yup';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
+
+import * as Yup from 'yup';
+import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
 
 import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../../../hooks/auth';
+import { useLocalStorage } from '../../../hooks/storage';
+import { POSTS_KEY } from '../../../contants/local-storage';
+
 import getValidationErrors from '../../../utils/getValidationErrors';
 
 import Input from '../../../components/Input';
@@ -39,7 +42,8 @@ const EditPost: React.FC = () => {
 
   const { addToast } = useToasts();
   const { user } = useAuth();
-  const storageKey = `@Blog::${user.id}::posts`;
+  const storageKey = POSTS_KEY();
+  const [posts] = useLocalStorage(storageKey, []);
 
   const [initialData, setInitialData] = useState({ title: '', body: '' });
 
@@ -52,10 +56,8 @@ const EditPost: React.FC = () => {
 
   const editPost = useCallback(
     (newPost) => {
-      const posts = localStorage.getItem(storageKey);
-
       if (posts) {
-        const updatedData = JSON.parse(posts).filter((data: PostProps) => {
+        const updatedData = posts.filter((data: PostProps) => {
           return data.id.toString() !== params.id;
         });
 
@@ -67,7 +69,7 @@ const EditPost: React.FC = () => {
         localStorage.setItem(storageKey, JSON.stringify([newPost]));
       }
     },
-    [storageKey, params],
+    [storageKey, params, posts],
   );
 
   const handleSubmit = useCallback(

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
-import { useAuth } from '../../../hooks/auth';
+import { useLocalStorage } from '../../../hooks/storage';
+import { POSTS_KEY } from '../../../contants/local-storage';
 
 import Header from '../../../components/Header';
 import Comment, { CommentProps } from '../../../components/Comment';
@@ -12,12 +13,10 @@ import { Container } from '../../../styles/main';
 
 const ShowPost: React.FC = () => {
   const { id } = useParams();
+  const [allPosts] = useLocalStorage(POSTS_KEY(), []);
 
   const [post, setPost] = useState<PostProps>({} as PostProps);
   const [comments, setComments] = useState<CommentProps[]>([]);
-
-  const { user } = useAuth();
-  const storageKey = `@Blog::${user.id}::posts`;
 
   useEffect(() => {
     const loadPost = async (): Promise<void> => {
@@ -28,12 +27,9 @@ const ShowPost: React.FC = () => {
         const { status } = err.response;
 
         if (status === 404) {
-          const posts = localStorage.getItem(storageKey);
-
-          if (posts) {
-            const parsedData = JSON.parse(posts);
-            const showPost = parsedData.find((postData: PostProps) => {
-              return postData.id === id;
+          if (allPosts) {
+            const showPost = allPosts.find((item: PostProps) => {
+              return item.id === id;
             });
             setPost(showPost);
           }
@@ -48,7 +44,7 @@ const ShowPost: React.FC = () => {
 
     loadPost();
     loadComments();
-  }, [id, storageKey]);
+  }, [id, allPosts]);
 
   return (
     <Container>

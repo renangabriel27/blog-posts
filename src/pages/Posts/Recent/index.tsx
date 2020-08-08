@@ -3,34 +3,26 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../../components/Header';
 import Post, { PostProps } from '../../../components/Post';
 import { useAuth } from '../../../hooks/auth';
+import { useLocalStorage } from '../../../hooks/storage';
+import { POSTS_KEY } from '../../../contants/local-storage';
 
 import api from '../../../services/api';
 
 import { Container } from '../../../styles/main';
 
 const RecentPosts: React.FC = () => {
-  const [recentPosts, setRecentPosts] = useState<PostProps[]>([]);
-  const [loading, setLoading] = useState(true);
-
   const { user } = useAuth();
-  const storageKey = `@Blog::${user.id}::posts`;
+  const [recentPosts, setRecentPosts] = useLocalStorage(POSTS_KEY(), []);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loadRecentPosts = async (): Promise<void> => {
       try {
-        const posts = localStorage.getItem(storageKey);
-
-        if (posts) {
-          setRecentPosts(JSON.parse(posts));
-          setLoading(false);
-        }
-
         const response = await api.get('/posts');
         const { data } = response;
         const latestPosts = data.slice(0, 5);
 
-        if (!posts) {
-          localStorage.setItem(storageKey, JSON.stringify(latestPosts));
+        if (recentPosts.length === 0) {
           setRecentPosts(latestPosts);
           setLoading(false);
         }
@@ -40,7 +32,7 @@ const RecentPosts: React.FC = () => {
     };
 
     loadRecentPosts();
-  }, [storageKey]);
+  }, [setRecentPosts, recentPosts]);
 
   if (loading) {
     return (
@@ -60,7 +52,7 @@ const RecentPosts: React.FC = () => {
         <h1>Welcome {user.name}!</h1>
       </Header>
 
-      {recentPosts.map((post) => {
+      {recentPosts.map((post: PostProps) => {
         return (
           <Post
             key={post.id}
