@@ -5,6 +5,7 @@ import api from '../services/api';
 interface UserProps {
   id: number;
   name: string;
+  email?: string;
 }
 
 interface AuthState {
