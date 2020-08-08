@@ -15,11 +15,7 @@ export const Content = styled.div`
 
   width: 100%;
 
-  form {
-    width: 360px;
-
-    > h1 {
-      text-align: center;
-    }
+  form > h1 {
+    text-align: center;
   }
 `;
