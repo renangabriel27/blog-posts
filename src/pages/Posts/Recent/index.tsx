@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 
 import Header from '../../../components/Header';
-import Post, { PostProps } from '../../../components/Post';
+import { PostProps } from '../../../components/Post';
 import { useAuth } from '../../../hooks/auth';
 import { useSwr } from '../../../hooks/swr';
 import { useLocalStorage } from '../../../hooks/storage';
 import { POSTS_KEY } from '../../../contants/local-storage';
 
+import Posts from '../../../components/Posts';
 import { Container } from '../../../styles/main';
 
 const RecentPosts: React.FC = () => {
@@ -52,17 +53,7 @@ const RecentPosts: React.FC = () => {
         <h1>Welcome {user.name}!</h1>
       </Header>
 
-      {recentPosts.map((post: PostProps) => {
-        return (
-          <Post
-            key={post.id}
-            id={post.id}
-            title={post.title}
-            body={post.body}
-            userId={post.userId}
-          />
-        );
-      })}
+      <Posts posts={recentPosts} />
     </Container>
   );
 };

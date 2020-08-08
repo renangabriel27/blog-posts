@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const Container = styled.div`
   background: var(--dark-light);
   border: 1px solid var(--black);
-  padding: 20px;
+  padding: 20px 20px 50px 20px;
   margin: 10px 0;
   word-wrap: break-word;
   cursor: pointer;
@@ -48,10 +48,4 @@ export const Delete = styled.button`
   color: var(--white);
   background: transparent;
   text-decoration: none;
-`;
-
-export const Creator = styled.p`
-  margin-top: 50px;
-  text-transform: uppercase;
-  font-size: 10px;
 `;

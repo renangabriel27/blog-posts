@@ -14,13 +14,23 @@ import {
   Delete,
   Buttons,
   Description,
+  Creator,
 } from './styles';
+
+interface UserProps {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  website: string;
+}
 
 export interface PostProps {
   id: number;
   title: string;
   body: string;
   userId: number;
+  creator?: UserProps;
   showOptions?: boolean;
 }
 
@@ -29,6 +39,7 @@ const Post: React.FC<PostProps> = ({
   title,
   body,
   userId,
+  creator = {} as UserProps,
   showOptions = true,
 }) => {
   const { user } = useAuth();
@@ -85,6 +96,10 @@ const Post: React.FC<PostProps> = ({
 
       <Title>{title}</Title>
       <Description>{body}</Description>
+
+      <Creator>
+        {creator.name}, {creator.website}
+      </Creator>
     </Container>
   );
 };

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 import Header from '../../../components/Header';
-import Post, { PostProps } from '../../../components/Post';
-
+import { PostProps } from '../../../components/Post';
 import { POSTS_KEY } from '../../../contants/local-storage';
 
 import { useAuth } from '../../../hooks/auth';
 import { useLocalStorage } from '../../../hooks/storage';
 
+import Posts from '../../../components/Posts';
 import { Container } from '../../../styles/main';
 
 const PersonalPosts: React.FC = () => {
@@ -33,17 +33,7 @@ const PersonalPosts: React.FC = () => {
         <h1>My Posts</h1>
       </Header>
 
-      {myPosts.map((post: PostProps) => {
-        return (
-          <Post
-            key={post.id}
-            id={post.id}
-            title={post.title}
-            body={post.body}
-            userId={post.userId}
-          />
-        );
-      })}
+      <Posts posts={myPosts} />
     </Container>
   );
 };
