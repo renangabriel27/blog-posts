@@ -60,7 +60,7 @@ $ yarn start
 ## What you can do!
 
 * Access the https://neurologic.vercel.app/
-* The authentication is made with the id of the users of the https://jsonplaceholder.typicode.com/ api (you can put any number between 1 and 10 to enter)
+* The authentication was made with the id of the users of the https://jsonplaceholder.typicode.com/ api. (You can put any number between 1 and 10 to enter)
 * You can view the recent posts (the last 5 insertions)
 * You can view your own posts
 * You can create/edit your posts
