@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { useHistory } from 'react-router-dom';
 import Header from '../../../components/Header';
 import { PostProps } from '../../../components/Post';
 import { POSTS_KEY } from '../../../constants/local-storage';
@@ -16,9 +15,6 @@ const PersonalPosts: React.FC = () => {
   const [allPosts, setAllPosts] = useLocalStorage(POSTS_KEY(), []);
   const [myPosts, setMyPosts] = useState<PostProps[]>([]);
 
-  const { location } = useHistory<any>();
-  const { state } = location;
-
   useEffect(() => {
     const loadMyPosts = async (): Promise<void> => {
       const onlyMyPosts = allPosts.filter((post: PostProps) => {
@@ -28,12 +24,8 @@ const PersonalPosts: React.FC = () => {
       setMyPosts(onlyMyPosts);
     };
 
-    if (state && state.posts) {
-      setAllPosts(state.posts);
-    }
-
     loadMyPosts();
-  }, [user, allPosts, setAllPosts, state]);
+  }, [user, allPosts, setAllPosts]);
 
   return (
     <Container>

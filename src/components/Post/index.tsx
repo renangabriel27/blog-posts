@@ -1,18 +1,13 @@
 import React, { useCallback } from 'react';
-import { FiTrash, FiEdit, FiEye } from 'react-icons/fi';
-import swal from 'sweetalert';
+import { FiEdit, FiEye } from 'react-icons/fi';
 
-import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
-import { useLocalStorage } from '../../hooks/storage';
-import { POSTS_KEY } from '../../constants/local-storage';
 
 import {
   Container,
   Title,
   Edit,
   Show,
-  Delete,
   Buttons,
   Description,
   Creator,
@@ -44,40 +39,10 @@ const Post: React.FC<PostProps> = ({
   showOptions = true,
 }) => {
   const { user } = useAuth();
-  const storageKey = POSTS_KEY();
-  const [posts] = useLocalStorage(storageKey, []);
-  const history = useHistory();
 
   const canEdit = useCallback(() => {
     return user.id === userId;
   }, [user, userId]);
-
-  const handleDelete = useCallback(() => {
-    swal({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this post!',
-      icon: 'warning',
-      dangerMode: true,
-      buttons: ['Cancel', 'Ok'],
-    }).then((willDelete) => {
-      if (willDelete) {
-        swal('Poof! Your post has been deleted!', {
-          icon: 'success',
-        });
-
-        if (posts) {
-          const newPosts = posts.filter((post: PostProps) => {
-            return post.id !== id;
-          });
-
-          history.push({
-            pathname: history.location.pathname,
-            state: { posts: newPosts },
-          });
-        }
-      }
-    });
-  }, [id, posts, history]);
 
   return (
     <Container>
@@ -96,9 +61,6 @@ const Post: React.FC<PostProps> = ({
               <FiEdit size={16} />
             </Edit>
           )}
-          <Delete onClick={() => handleDelete()}>
-            <FiTrash size={16} />
-          </Delete>
         </Buttons>
       )}
 

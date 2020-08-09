@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-import { useHistory } from 'react-router-dom';
 import Header from '../../../components/Header';
 import { PostProps } from '../../../components/Post';
 import { useAuth } from '../../../hooks/auth';
@@ -14,8 +13,6 @@ import { Container } from '../../../styles/main';
 
 const RecentPosts: React.FC = () => {
   const { user } = useAuth();
-  const { location } = useHistory<any>();
-  const { state } = location;
 
   const { data: posts } = useSwr<PostProps[]>('/posts');
   const [recentPosts, setRecentPosts] = useLocalStorage(POSTS_KEY(), []);
@@ -33,12 +30,8 @@ const RecentPosts: React.FC = () => {
       }
     };
 
-    if (state && state.posts) {
-      setRecentPosts(state.posts);
-    }
-
     loadRecentPosts();
-  }, [setRecentPosts, recentPosts, state, posts]);
+  }, [setRecentPosts, recentPosts, posts]);
 
   if (!posts) {
     return (

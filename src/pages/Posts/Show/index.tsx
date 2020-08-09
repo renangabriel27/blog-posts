@@ -20,6 +20,7 @@ import Input from '../../../components/Input';
 import Textarea from '../../../components/Textarea';
 import Button from '../../../components/Button';
 import Comments from '../../../components/Comments';
+import PostLoading from '../../../components/PostLoading';
 import { CommentProps } from '../../../components/Comment';
 import { PostProps } from '../../../components/Post';
 import Posts from '../../../components/Posts';
@@ -133,7 +134,9 @@ const ShowPost: React.FC = () => {
         <Header>
           <h1>Post</h1>
         </Header>
-        <h1>Loading...</h1>
+        <PostLoading key={uuidv4()} />
+
+        <Button type="submit">Add comment</Button>
       </Container>
     );
   }

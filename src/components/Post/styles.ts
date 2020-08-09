@@ -43,14 +43,6 @@ export const Show = styled(Button)``;
 
 export const Edit = styled(Button)``;
 
-export const Delete = styled.button`
-  border: none;
-  padding: 5px;
-  color: var(--white);
-  background: transparent;
-  text-decoration: none;
-`;
-
 export const Creator = styled.p`
   margin-top: 50px;
   text-transform: uppercase;
