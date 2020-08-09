@@ -11,7 +11,7 @@ import { useAuth } from '../../../hooks/auth';
 
 import { useLocalStorage } from '../../../hooks/storage';
 import { useSwr } from '../../../hooks/swr';
-import { POSTS_KEY, COMMENTS_KEY } from '../../../contants/local-storage';
+import { POSTS_KEY, COMMENTS_KEY } from '../../../constants/local-storage';
 
 import getValidationErrors from '../../../utils/getValidationErrors';
 
@@ -152,7 +152,7 @@ const ShowPost: React.FC = () => {
 
       {showForm && (
         <Form ref={formRef} onSubmit={handleAddComment}>
-          <Input name="name" placeholder="Name" />
+          <Input name="name" placeholder="Title" />
           <Textarea name="body" placeholder="Content" />
 
           <Button type="submit">Comment</Button>

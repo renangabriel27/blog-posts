@@ -6,7 +6,7 @@ import { PostProps } from '../../../components/Post';
 import { useAuth } from '../../../hooks/auth';
 import { useSwr } from '../../../hooks/swr';
 import { useLocalStorage } from '../../../hooks/storage';
-import { POSTS_KEY } from '../../../contants/local-storage';
+import { POSTS_KEY } from '../../../constants/local-storage';
 
 import Posts from '../../../components/Posts';
 import { Container } from '../../../styles/main';

@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
 
-import { USER_KEY } from '../contants/local-storage';
+import { USER_KEY } from '../constants/local-storage';
 
 import api from '../services/api';
 

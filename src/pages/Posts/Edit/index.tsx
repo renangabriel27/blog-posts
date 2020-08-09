@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../../../hooks/auth';
 import { useLocalStorage } from '../../../hooks/storage';
-import { POSTS_KEY } from '../../../contants/local-storage';
+import { POSTS_KEY } from '../../../constants/local-storage';
 
 import getValidationErrors from '../../../utils/getValidationErrors';
 

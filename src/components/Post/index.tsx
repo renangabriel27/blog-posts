@@ -5,7 +5,7 @@ import swal from 'sweetalert';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
 import { useLocalStorage } from '../../hooks/storage';
-import { POSTS_KEY } from '../../contants/local-storage';
+import { POSTS_KEY } from '../../constants/local-storage';
 
 import {
   Container,

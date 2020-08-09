@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../../../components/Header';
 import { PostProps } from '../../../components/Post';
-import { POSTS_KEY } from '../../../contants/local-storage';
+import { POSTS_KEY } from '../../../constants/local-storage';
 
 import { useAuth } from '../../../hooks/auth';
 import { useLocalStorage } from '../../../hooks/storage';

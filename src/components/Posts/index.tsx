@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 
 import Post, { PostProps } from '../Post';
-import { USERS_KEY } from '../../contants/local-storage';
+import { USERS_KEY } from '../../constants/local-storage';
 
 import { useSwr } from '../../hooks/swr';
 import { useLocalStorage } from '../../hooks/storage';
