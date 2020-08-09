@@ -2,8 +2,9 @@ import React, { useCallback } from 'react';
 import { FiTrash, FiEdit, FiEye } from 'react-icons/fi';
 import swal from 'sweetalert';
 
+import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
-import { useLocalStorage, updateLocalStorage } from '../../hooks/storage';
+import { useLocalStorage } from '../../hooks/storage';
 import { POSTS_KEY } from '../../contants/local-storage';
 
 import {
@@ -45,6 +46,7 @@ const Post: React.FC<PostProps> = ({
   const { user } = useAuth();
   const storageKey = POSTS_KEY();
   const [posts] = useLocalStorage(storageKey, []);
+  const history = useHistory();
 
   const canEdit = useCallback(() => {
     return user.id === userId;
@@ -59,17 +61,23 @@ const Post: React.FC<PostProps> = ({
       buttons: ['Cancel', 'Ok'],
     }).then((willDelete) => {
       if (willDelete) {
+        swal('Poof! Your post has been deleted!', {
+          icon: 'success',
+        });
+
         if (posts) {
           const newPosts = posts.filter((post: PostProps) => {
             return post.id !== id;
           });
 
-          updateLocalStorage(storageKey, newPosts);
-          document.location.reload(true);
+          history.push({
+            pathname: history.location.pathname,
+            state: { posts: newPosts },
+          });
         }
       }
     });
-  }, [id, posts, storageKey]);
+  }, [id, posts, history]);
 
   return (
     <Container>

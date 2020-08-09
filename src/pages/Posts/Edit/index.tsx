@@ -8,7 +8,7 @@ import { FormHandles } from '@unform/core';
 import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../../../hooks/auth';
-import { useLocalStorage, updateLocalStorage } from '../../../hooks/storage';
+import { useLocalStorage } from '../../../hooks/storage';
 import { POSTS_KEY } from '../../../contants/local-storage';
 
 import getValidationErrors from '../../../utils/getValidationErrors';
@@ -43,7 +43,7 @@ const EditPost: React.FC = () => {
   const { addToast } = useToasts();
   const { user } = useAuth();
   const storageKey = POSTS_KEY();
-  const [posts] = useLocalStorage(storageKey, []);
+  const [posts, setPosts] = useLocalStorage(storageKey, []);
 
   const [initialData, setInitialData] = useState({ title: '', body: '' });
 
@@ -55,18 +55,18 @@ const EditPost: React.FC = () => {
   }, [state]);
 
   const editPost = useCallback(
-    (newPost) => {
+    (updatedPost) => {
       if (posts) {
         const updatedData = posts.filter((data: PostProps) => {
           return data.id.toString() !== params.id;
         });
 
-        updateLocalStorage(storageKey, [newPost, ...updatedData]);
+        setPosts([updatedPost, ...updatedData]);
       } else {
-        updateLocalStorage(storageKey, [newPost]);
+        setPosts([updatedPost]);
       }
     },
-    [storageKey, params, posts],
+    [params, posts, setPosts],
   );
 
   const handleSubmit = useCallback(

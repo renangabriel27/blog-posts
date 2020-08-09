@@ -16,7 +16,3 @@ export function useLocalStorage(key: string, initialValue: any) {
 
   return [storedValue, setStoredValue];
 }
-
-export function updateLocalStorage(key: string, updatedValue: any) {
-  localStorage.setItem(key, JSON.stringify(updatedValue));
-}

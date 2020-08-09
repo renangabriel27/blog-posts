@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../../../hooks/auth';
-import { useLocalStorage, updateLocalStorage } from '../../../hooks/storage';
+import { useLocalStorage } from '../../../hooks/storage';
 import { POSTS_KEY } from '../../../contants/local-storage';
 
 import getValidationErrors from '../../../utils/getValidationErrors';
@@ -37,17 +37,14 @@ const CreatePost: React.FC = () => {
   const { user } = useAuth();
 
   const storageKey = POSTS_KEY();
-  const [posts] = useLocalStorage(storageKey, []);
+  const [posts, setPosts] = useLocalStorage(storageKey, []);
 
   const addNewPost = useCallback(
     (newPost) => {
-      if (posts) {
-        updateLocalStorage(storageKey, [newPost, ...posts]);
-      } else {
-        updateLocalStorage(storageKey, [newPost]);
-      }
+      const newPosts = posts ? [newPost, ...posts] : [newPost];
+      return setPosts(newPosts);
     },
-    [storageKey, posts],
+    [posts, setPosts],
   );
 
   const handleSubmit = useCallback(
