@@ -35,6 +35,7 @@ export default createGlobalStyle`
     --background: #23292e;
     --secondary: #ff9000;
     --dark-light: #30363f;
+    --gray-light: #636E72;
     --error: #c53030;
     --black: #000;
     --white: #fff;
