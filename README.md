@@ -2,7 +2,7 @@
 
 Manage your posts easily on your browser! :)
 
-![blogposts](https://i.imgur.com/Pd0fgsv.png)
+![blogposts](https://i.imgur.com/FZDBGKW.png)
 
 ## Table of contents
 * [General info](#general-info)
@@ -61,13 +61,13 @@ $ yarn start
 
 * Access the https://neurologic.vercel.app/
 * The authentication is made with the id of the users of the https://jsonplaceholder.typicode.com/ api (you can put any number between 1 and 10 to enter)
-* You can view the recent posts (the last 5 inserteds)
+* You can view the recent posts (the last 5 insertions)
 * You can view your own posts
-* You can create/edit/destroy your posts
+* You can create/edit your posts
 * You can view a post and your comments
 * You can add comments
 
-![Imgur](https://i.imgur.com/bWmqTC2.gif)
+![Imgur](https://i.imgur.com/6eJ4OOB.gif)
 
 
 
