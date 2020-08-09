@@ -17,6 +17,7 @@ export const Container = styled.div`
 export const Title = styled.h1`
   font-size: 24px;
   font-weight: 600;
+  text-transform: uppercase;
 `;
 
 export const Description = styled.p`

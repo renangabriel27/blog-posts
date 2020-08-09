@@ -23,3 +23,10 @@ export const Description = styled.p`
   font-size: 14px;
   font-weight: 400;
 `;
+
+export const Email = styled.p`
+  margin-bottom: 20px;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-decoration: underline;
+`;

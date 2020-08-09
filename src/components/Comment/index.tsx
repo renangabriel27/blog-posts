@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Title, Description } from './styles';
+import { Container, Title, Email, Description } from './styles';
 
 export interface CommentProps {
   id: number;
@@ -10,9 +10,10 @@ export interface CommentProps {
   postId: number;
 }
 
-const Comment: React.FC<CommentProps> = ({ id, name, email, body, postId }) => {
+const Comment: React.FC<CommentProps> = ({ name, email, body }) => {
   return (
     <Container>
+      <Email>{email}</Email>
       <Title>{name}</Title>
       <Description>{body}</Description>
     </Container>

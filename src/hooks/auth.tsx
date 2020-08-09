@@ -1,11 +1,13 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
 
+import { USER_KEY } from '../contants/local-storage';
+
 import api from '../services/api';
 
 interface UserProps {
   id: number;
   name: string;
-  email?: string;
+  email: string;
 }
 
 interface AuthState {
@@ -22,7 +24,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
-    const user = localStorage.getItem('@Blog::user');
+    const user = localStorage.getItem(USER_KEY);
 
     if (user) {
       return { user: JSON.parse(user) };
@@ -34,17 +36,17 @@ const AuthProvider: React.FC = ({ children }) => {
   const signIn = useCallback(async (identification) => {
     const response = await api.get(`/users/${identification}`);
 
-    const { id, name } = response.data;
+    const { id, name, email } = response.data;
 
-    const user = { id, name };
+    const user = { id, name, email };
 
-    localStorage.setItem('@Blog::user', JSON.stringify(user));
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
 
     setData({ user });
   }, []);
 
   const signOut = useCallback(() => {
-    localStorage.removeItem('@Blog::user');
+    localStorage.removeItem(USER_KEY);
 
     setData({} as AuthState);
   }, []);

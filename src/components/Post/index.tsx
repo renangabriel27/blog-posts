@@ -99,7 +99,7 @@ const Post: React.FC<PostProps> = ({
 
       {!!creator && (
         <Creator>
-          {creator.name}, {creator.website}
+          By {creator.name}, {creator.website}
         </Creator>
       )}
     </Container>

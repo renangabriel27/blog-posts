@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useToasts } from 'react-toast-notifications';
 import { useAuth } from '../../../hooks/auth';
 
-import { useLocalStorage, updateLocalStorage } from '../../../hooks/storage';
+import { useLocalStorage } from '../../../hooks/storage';
 import { useSwr } from '../../../hooks/swr';
 import { POSTS_KEY, COMMENTS_KEY } from '../../../contants/local-storage';
 
@@ -43,7 +43,7 @@ const ShowPost: React.FC = () => {
   );
 
   const [post, setPost] = useState<PostProps>({} as PostProps);
-  const [comments] = useLocalStorage(COMMENTS_KEY, []);
+  const [comments, setComments] = useLocalStorage(COMMENTS_KEY, []);
 
   useEffect(() => {
     if (postsData) {
@@ -71,13 +71,12 @@ const ShowPost: React.FC = () => {
   const addNewComment = useCallback(
     (newComment) => {
       if (comments.length > 0) {
-        localStorage.removeItem(COMMENTS_KEY);
-        updateLocalStorage(COMMENTS_KEY, [newComment, ...comments]);
+        setComments([newComment, ...comments]);
       } else {
-        updateLocalStorage(COMMENTS_KEY, [newComment]);
+        setComments([newComment]);
       }
     },
-    [comments],
+    [comments, setComments],
   );
 
   const handleAddComment = useCallback(
@@ -110,7 +109,6 @@ const ShowPost: React.FC = () => {
         });
 
         setShowForm(false);
-        document.location.reload(true);
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -161,10 +159,7 @@ const ShowPost: React.FC = () => {
         </Form>
       )}
 
-      <h1>Comments</h1>
-
-      <Comments comments={selectMyComments(comments)} />
-      <Comments comments={commentsData} />
+      <Comments comments={[...selectMyComments(comments), ...commentsData]} />
     </Container>
   );
 };

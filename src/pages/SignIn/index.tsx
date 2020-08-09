@@ -67,11 +67,7 @@ const SignIn: React.FC = () => {
           <Form ref={formRef} onSubmit={handleSubmit}>
             <h1>Login</h1>
 
-            <Input
-              name="id"
-              icon={FiUser}
-              placeholder="please insert your id"
-            />
+            <Input name="id" icon={FiUser} placeholder="your id" />
 
             <Button type="submit">Enter</Button>
           </Form>
