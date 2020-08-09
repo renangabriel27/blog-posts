@@ -9,6 +9,7 @@ import { useLocalStorage } from '../../../hooks/storage';
 import { POSTS_KEY } from '../../../constants/local-storage';
 
 import Posts from '../../../components/Posts';
+import PostsLoading from '../../../components/PostsLoading';
 import { Container } from '../../../styles/main';
 
 const RecentPosts: React.FC = () => {
@@ -21,18 +22,14 @@ const RecentPosts: React.FC = () => {
 
   useEffect(() => {
     const loadRecentPosts = async (): Promise<void> => {
-      try {
-        if (!posts) {
-          return;
-        }
+      if (!posts) {
+        return;
+      }
 
-        const latestPosts = posts.slice(0, 5);
+      const latestPosts = posts.slice(0, 5);
 
-        if (recentPosts.length === 0) {
-          setRecentPosts(latestPosts);
-        }
-      } catch (err) {
-        console.error(err);
+      if (recentPosts.length === 0) {
+        setRecentPosts(latestPosts);
       }
     };
 
@@ -50,7 +47,7 @@ const RecentPosts: React.FC = () => {
           <h1>Welcome {user.name}!</h1>
         </Header>
 
-        <h1>Loading...</h1>
+        <PostsLoading />
       </Container>
     );
   }
